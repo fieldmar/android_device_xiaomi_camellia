@@ -1270,6 +1270,10 @@ vendor/bin/atcid
 vendor/lib64/libwifitest.so
 vendor/lib64/vendor.mediatek.hardware.atci@1.0.so
 
+# Radio (IMS IPsec monitor) - tracks kernel xfrm state for IMS IPsec
+vendor/bin/ipsec_mon
+vendor/etc/init/ipsec_mon.rc
+
 # Radio (modem operator config) - MCF OTA files the modem reads via S:\mdota
 vendor/etc/mdota/MTK_MD_OTA_CONFIG.ini
 vendor/etc/mdota/MTK_OPOTA_GENERAL.mcfopota
