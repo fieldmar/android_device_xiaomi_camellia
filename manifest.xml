@@ -137,6 +137,11 @@
         <fqname>@1.2::IMtkPower/default</fqname>
     </hal>
     <hal format="hidl">
+        <name>vendor.mediatek.hardware.atci</name>
+        <transport>hwbinder</transport>
+        <fqname>@1.0::IAtcid/default</fqname>
+    </hal>
+    <hal format="hidl">
         <name>vendor.mediatek.hardware.mtkradioex</name>
         <transport>hwbinder</transport>
         <fqname>@3.0::IMtkRadioEx/imsSlot1</fqname>

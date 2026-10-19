@@ -1,0 +1,18 @@
+# MediaTek AT command interface daemon, from stock MIUI V14.0.6.0 atcid.rc.
+# The stock "interface" line is dropped; atcid registers IAtcid itself and the
+# HAL is declared in manifest.xml. Disabled by default; start it as root with
+#   setprop persist.vendor.service.atci.autostart 1
+# then send AT commands to /dev/socket/adb_atci_socket.
+service atcid-daemon-u /vendor/bin/atcid
+    class main
+    socket adb_atci_socket stream 660 radio system
+    user system
+    group radio system media bluetooth wifi
+    disabled
+    oneshot
+
+on property:persist.vendor.service.atci.autostart=1
+    start atcid-daemon-u
+
+on property:sys.boot_completed=1
+    setprop vendor.mtk.atci.boot_completed 1

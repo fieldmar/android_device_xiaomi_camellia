@@ -62,6 +62,13 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
+    name: "init.atcid.rc",
+    src: "etc/init.atcid.rc",
+    sub_dir: "init",
+    vendor: true,
+}
+
+prebuilt_etc {
     name: "init.target.rc",
     src: "etc/init.target.rc",
     sub_dir: "init",

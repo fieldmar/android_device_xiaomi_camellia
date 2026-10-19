@@ -243,6 +243,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     fstab.mt6833 \
     fstab.mt6833.ramdisk \
+    init.atcid.rc \
     init.connectivity.rc \
     init.modem.rc \
     init.mt6833.rc \
