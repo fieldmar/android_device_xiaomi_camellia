@@ -255,8 +255,15 @@ adds a small number of commits on top of cristidclxvi's branch:
   calls
 - stock `atcid`, `ipsec_mon` and the modem's `mdota` and `cacerts` files
 
-`git log github/lineage-23.2..HEAD` lists them, with `github` being
-cristidclxvi's remote.
+The commits are listed in
+[this comparison against cristidclxvi's branch](https://github.com/cristidclxvi/android_device_xiaomi_camellia/compare/lineage-23.2...fieldmar:android_device_xiaomi_camellia:camellian-23.2).
+From a clone of this fork:
+
+```
+git remote add upstream https://github.com/cristidclxvi/android_device_xiaomi_camellia
+git fetch upstream
+git log upstream/lineage-23.2..origin/camellian-23.2
+```
 
 ## License
 
