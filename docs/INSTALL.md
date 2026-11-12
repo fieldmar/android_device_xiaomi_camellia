@@ -19,15 +19,15 @@ Redmi Note 10 5G / Redmi Note 10T 5G / POCO M3 Pro 5G
 
    | Model | Device | Status |
    |---|---|---|
-   | `M2103K19C` | Redmi Note 10 5G (China) | **tested** |
-   | `M2103K19G` | Redmi Note 10 5G (Global) | untested |
+   | `M2103K19C` | Redmi Note 10 5G (China) | **tested** (cristidclxvi's builds) |
+   | `M2103K19G` | Redmi Note 10 5G (Global) | **tested** (this fork) |
    | `M2103K19I` | Redmi Note 10T 5G (India) | untested |
    | `M2103K19PG` | POCO M3 Pro 5G (Global) | untested |
    | `M2103K19PI` | POCO M3 Pro 5G (India) | untested |
 
-> **WARNING:** This ROM has only ever been installed and run on **`M2103K19C`**,
-> by one person, on one unit. The other four models are **expected** to work and
-> nothing is known to be wrong with them — one build serves all five, because
+> **WARNING:** This ROM has only been tested on two units: one **`M2103K19C`**
+> by cristidclxvi, and one **`M2103K19G`** on this fork. The other three models
+> are **expected** to work and nothing is known to be wrong with them — one build serves all five, because
 > every variant's drivers and firmware ship together and the correct ones are
 > chosen at runtime from the hardware IDs. But "expected to work" is not the same
 > as "tested", and no one has verified them.
@@ -87,7 +87,8 @@ before you continue.
 
 Failing to install the correct firmware version prior to installation may result
 in failure to install LineageOS, or unexpected crashes post-installation. The
-vendor blobs in this ROM come from V14.0.6.0, and a mismatched `tee` or `scp`
+vendor blobs in this ROM come from V14.0.6.0 (the Bluetooth, MCU and Wi-Fi
+firmware excepted, see the README), and a mismatched `tee` or `scp`
 typically presents as a broken lockscreen, fingerprint or DRM rather than as a
 clean failure.
 
@@ -224,6 +225,11 @@ Reboot to recovery and sideload the newer `.zip`. There is no need to format, an
 no need to reflash `boot`. The update installs to the unused slot and switches to
 it, so your data is preserved.
 
+> **NOTE:** This only holds between builds signed with the same keys. Builds of
+> this fork are signed with its own keys, not cristidclxvi's, so going from one
+> of his builds to one of these (or back) is a fresh install: flash this
+> build's `boot.img` and format data as described above.
+
 > **IMPORTANT: if you use Google Apps, sideload MindTheGapps again in the same
 > recovery session, before rebooting.** An update replaces the whole system, and
 > GApps live in `/product` and `/system_ext`, not in `/data`. They do **not**
@@ -245,18 +251,19 @@ it, so your data is preserved.
 - **NFC** is only fitted on `camellian` and `camellianp` units (Global and POCO
   Global). On `camellia` the hardware is absent, and its absence is correct
   rather than a fault. The NFC stack ships and is gated on the SKU exactly as
-  stock does it, but since no NFC-equipped unit was available it has never
-  actually run.
+  stock does it. It works on `camellian` (tested on an M2103K19G, which detects and
+  reads a contactless card); `camellianp` has not been tested.
 - **Recovery has no touch input.** Use the volume keys to move and power to
   select.
 - One build covers all five model numbers. Both touchscreen controllers, both
   fingerprint readers, both backlight ICs, all five display panels and all nine
   camera sensor combinations are compiled in and selected at runtime from the
-  bootloader's hardware IDs. On the tested unit that means NVT touch, FPC
-  fingerprint, TI backlight and a Tianma panel; the alternates are shipped but
-  have never been exercised.
-- **Auto-brightness** is calibrated against the one panel present on the tested
-  unit. The other four panels may read slightly differently.
+  bootloader's hardware IDs. On cristidclxvi's M2103K19C that means NVT touch,
+  FPC fingerprint, TI backlight and a Tianma panel. Which parts the tested
+  M2103K19G carries has not been recorded, so some alternates may never have
+  been exercised.
+- **Auto-brightness** is calibrated against the one panel present on
+  cristidclxvi's M2103K19C. The other four panels may read slightly differently.
 - Device identity (brand, model, market name) is resolved per variant at boot, so
-  a POCO should report as a POCO. This works on the tested unit but, like
+  a POCO should report as a POCO. This works on the two tested units but, like
   everything else above, has not been confirmed on the others.
