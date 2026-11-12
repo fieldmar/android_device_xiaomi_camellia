@@ -47,7 +47,9 @@ IDs.
 This tree is not part of official LineageOS, and no official build exists for
 this device.
 
-- Downloads and checksums: [Releases](../../releases)
+- Downloads and checksums for this fork: [Releases](../../releases)
+- cristidclxvi's builds, which this fork is based on:
+  [his Releases](https://github.com/cristidclxvi/android_device_xiaomi_camellia/releases)
 - Installing: [docs/INSTALL.md](docs/INSTALL.md)
 - Why the tree looks the way it does: [docs/NOTES.md](docs/NOTES.md)
 
@@ -63,7 +65,7 @@ this device.
 | Audio, sensors, fingerprint, IR blaster | works |
 | 90 Hz display, touch, auto-brightness | works |
 | LiveDisplay including Outdoor mode | works |
-| NFC (`camellian` / `camellianp` only) | untested; hardware absent on other SKUs |
+| NFC (`camellian` / `camellianp` only) | works on `camellian`; `camellianp` untested; hardware absent on other SKUs |
 | Per-app firewall, Data Saver | works |
 | Wi-Fi hotspot including tethered DNS | works |
 | 32-bit apps (`armeabi-v7a`) | works |
@@ -72,18 +74,27 @@ Built `userdebug`, but not a debuggable build: `ro.debuggable=0`, `ro.secure=1`,
 `ro.build.tags=release-keys`. `boot` and `vbmeta` are signed with a test key, so
 **never relock the bootloader while this is installed**.
 
-Tested on one M2103K19C by one person. The other four models are expected to
-work and nothing is known to be wrong with them, but none has been verified.
+cristidclxvi tested his builds on one M2103K19C. This fork is tested on one
+M2103K19G (`camellian`), dual SIM, on two UK carriers. The other three models
+are expected to work and nothing is known to be wrong with them, but none has
+been verified.
+
+Builds of this fork are signed with this fork's own release keys, not
+cristidclxvi's. Installing one over one of his builds, or the other way round,
+needs a data wipe, and a recovery from the other build will warn that the
+package signature does not verify.
 
 ## Building
 
 The kernel is not in the LineageOS organisation, so it needs a local manifest.
+The device tree below is this fork; the kernel, modules and IMS repositories
+are cristidclxvi's, unchanged.
 Save this as `.repo/local_manifests/camellia.xml` in a `lineage-23.2` tree:
 
 ```xml
 <manifest>
-  <project name="cristidclxvi/android_device_xiaomi_camellia"
-           path="device/xiaomi/camellia" remote="github" revision="lineage-23.2" />
+  <project name="fieldmar/android_device_xiaomi_camellia"
+           path="device/xiaomi/camellia" remote="github" revision="camellian-local" />
   <project name="cristidclxvi/android_kernel_xiaomi_camellia"
            path="kernel/xiaomi/camellia" remote="github" revision="lineage-23.2" />
   <project name="cristidclxvi/android_kernel_modules_xiaomi_camellia"
@@ -131,13 +142,19 @@ lunch lineage_camellia-bp4a-userdebug
 mka bacon
 ```
 
-Proprietary blobs are not included. Extract them from a device running stock
-MIUI 14 V14.0.6.0 with `./extract-files.py`.
+Proprietary blobs are not included. Extract them from stock MIUI 14 V14.0.6.0,
+either a running device or an unpacked ROM, with `./extract-files.py`.
+
+Nine connectivity firmware files are the exception. `proprietary-files.txt`
+pins them by SHA-1 to the gold set described under [Credits](#credits), and the
+V14.0.6.0 image carries different versions of most of them. Take those from a
+crDroid 14 camellia vendor image or from the gold ROM named there. Bluetooth,
+MCU and Wi-Fi firmware must stay a matched set.
 
 A build from these repositories is functionally identical to a release but not
 bit-identical. `CONFIG_LTO_CLANG` and `CONFIG_CFI_CLANG` make the kernel
 non-deterministic, the build date and version strings are baked into the system
-properties, and released images are signed with a private release key that is
+properties, and released images are signed with private release keys that are
 not published, so your own build gets whichever keys you sign it with.
 
 ## Related
@@ -160,19 +177,37 @@ running device lists exactly what that produces.
 
 ## Credits
 
-This tree targets LineageOS 23.2 and was built against the stock MIUI 14 vendor
-image, but it is not the first camellia work and should not read as though it
-were.
+This tree is the work of three groups, one built on the other. None of it
+should read as though it started here.
 
-Some of it is carried verbatim from the camellia tree at
-[dm700-devs/device_xiaomi_camellia](https://github.com/dm700-devs/device_xiaomi_camellia):
-the power HAL extension under `power/`, the vendor SELinux policy under
-`sepolicy/vendor/`, several of the `rootdir/etc/init.*.rc` files, and the
-extract-utils scaffolding. Those files are unmodified, copyright headers
-included.
+### dm700-devs: the original camellia tree
 
-Thanks to the people who wrote them: rio004, bengris32, Zinadin Zidan,
-SahilSonar, Matsvei Niaverau, Jerry Zhang, Arne Coucheron and Arian.
+The tree began as a snapshot of the `lineage-23.2` branch of
+[dm700-devs/device_xiaomi_camellia](https://github.com/dm700-devs/device_xiaomi_camellia)
+(commit `f6e2bf4`). Of the 99 files in this repository's first commit, 86 were
+byte-identical to that branch and 11 more were the same files with edits. That
+import was a single commit, so the history here does not carry the original
+authors. Their repository does, and it is the place to look for who wrote what.
+
+Still carried from it, unmodified and with copyright headers intact:
+
+- the power HAL extension under `power/`
+- most of the vendor SELinux policy under `sepolicy/vendor/`
+- several of the `rootdir/etc/init.*.rc` files
+- the extract-utils scaffolding
+- the resource overlays, which now live under `rro_overlays/` and were under
+  `overlay/` in their tree
+
+The top-level makefiles, `vendor.prop`, `manifest.xml` and
+`proprietary-files.txt` also started as theirs and have been edited since.
+
+Thanks to everyone who wrote that tree, among them rio004, Sushrut1101,
+bengris32, Zinadin Zidan, SahilSonar, Matsvei Niaverau, Jerry Zhang, Arne
+Coucheron and Arian.
+
+The files under `configs/` come out of the stock MIUI vendor image and are the
+same in any camellia tree for that reason. They arrived here by way of the
+dm700-devs tree all the same.
 
 Anyone can check exactly what is shared and what is not:
 
@@ -181,9 +216,37 @@ git clone https://github.com/dm700-devs/device_xiaomi_camellia /tmp/dm700
 diff -rq . /tmp/dm700 --exclude=.git
 ```
 
-The files under `configs/` are extracted from the stock vendor image. They are
-byte-identical in any camellia tree because they all come out of the same MIUI
-image, not because one was copied from another.
+### cristidclxvi: the Android 16 port and the kernel
+
+[cristidclxvi](https://github.com/cristidclxvi/android_device_xiaomi_camellia)
+brought the tree up to LineageOS 23.2: the patches under `patches/` that let
+Android 16 run on a 4.14 kernel, `libinit` and the single build for all five
+models, and the fixes for camera, Wi-Fi, Bluetooth, GPS, FM and VoLTE calling.
+The kernel and connectivity module repositories under [Related](#related) are
+his too. The kernel is Xiaomi's MediaTek source with the OpenELA 4.14.357
+stable tag merged into it.
+
+### crDroid: the connectivity firmware set
+
+The Bluetooth, MCU and Wi-Fi connsys firmware is pinned to the matched "gold"
+set (`Redmi/vnd_gold/gold:12/TP1A.220624.014/V14.0.1.0.TNQCNXM`). It was
+identified from the camellia tree crDroid 14 shipped,
+[crdroidandroid/android_device_xiaomi_camellia](https://github.com/crdroidandroid/android_device_xiaomi_camellia)
+at `8b32ce3802`. The firmware itself is MediaTek's and Xiaomi's.
+
+### This fork
+
+[fieldmar/android_device_xiaomi_camellia](https://github.com/fieldmar/android_device_xiaomi_camellia)
+adds a small number of commits on top of cristidclxvi's branch:
+
+- ViLTE turned off so the modem registers IMS, which makes VoLTE work on
+  carriers where it did not
+- the gold connectivity firmware above, which fixes Bluetooth earbuds that
+  dropped audio after a pause and lost the microphone on repeat calls
+- stock `atcid`, `ipsec_mon` and the modem's `mdota` and `cacerts` files
+
+`git log github/lineage-23.2..HEAD` lists them, with `github` being
+cristidclxvi's remote.
 
 ## License
 
