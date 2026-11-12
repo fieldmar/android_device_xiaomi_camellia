@@ -94,7 +94,7 @@ Save this as `.repo/local_manifests/camellia.xml` in a `lineage-23.2` tree:
 ```xml
 <manifest>
   <project name="fieldmar/android_device_xiaomi_camellia"
-           path="device/xiaomi/camellia" remote="github" revision="camellian-local" />
+           path="device/xiaomi/camellia" remote="github" revision="camellian-23.2" />
   <project name="cristidclxvi/android_kernel_xiaomi_camellia"
            path="kernel/xiaomi/camellia" remote="github" revision="lineage-23.2" />
   <project name="cristidclxvi/android_kernel_modules_xiaomi_camellia"
