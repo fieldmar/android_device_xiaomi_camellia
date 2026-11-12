@@ -226,13 +226,22 @@ The kernel and connectivity module repositories under [Related](#related) are
 his too. The kernel is Xiaomi's MediaTek source with the OpenELA 4.14.357
 stable tag merged into it.
 
-### crDroid: the connectivity firmware set
+### dm700-devs and crDroid: the connectivity firmware set
 
 The Bluetooth, MCU and Wi-Fi connsys firmware is pinned to the matched "gold"
-set (`Redmi/vnd_gold/gold:12/TP1A.220624.014/V14.0.1.0.TNQCNXM`). It was
-identified from the camellia tree crDroid 14 shipped,
-[crdroidandroid/android_device_xiaomi_camellia](https://github.com/crdroidandroid/android_device_xiaomi_camellia)
-at `8b32ce3802`. The firmware itself is MediaTek's and Xiaomi's.
+set (`Redmi/vnd_gold/gold:12/TP1A.220624.014/V14.0.1.0.TNQCNXM`).
+
+Choosing that set was Sushrut1101's work in the dm700-devs tree: commit
+`8b32ce3`, "Update connectivity firmware from gold", October 2023, which
+replaced an earlier firmware set to fix weak Bluetooth signal. crDroid 14
+shipped it from the same commit in
+[crdroidandroid/android_device_xiaomi_camellia](https://github.com/crdroidandroid/android_device_xiaomi_camellia),
+and a crDroid build is where the files in this fork's builds were taken from.
+
+The dm700-devs `lineage-23.2` branch kept the gold pins for one chip revision
+only, and cristidclxvi's tree then moved all of them to the stock V14.0.6.0
+firmware. This fork pins the full 2023 set again. The firmware itself is
+MediaTek's and Xiaomi's.
 
 ### This fork
 
@@ -241,8 +250,9 @@ adds a small number of commits on top of cristidclxvi's branch:
 
 - ViLTE turned off so the modem registers IMS, which makes VoLTE work on
   carriers where it did not
-- the gold connectivity firmware above, which fixes Bluetooth earbuds that
-  dropped audio after a pause and lost the microphone on repeat calls
+- the gold connectivity firmware restored as above, which fixes Bluetooth
+  earbuds that dropped audio after a pause and lost the microphone on repeat
+  calls
 - stock `atcid`, `ipsec_mon` and the modem's `mdota` and `cacerts` files
 
 `git log github/lineage-23.2..HEAD` lists them, with `github` being
