@@ -68,6 +68,7 @@ this device.
 | NFC (`camellian` / `camellianp` only) | works on `camellian`; `camellianp` untested; hardware absent on other SKUs |
 | Per-app firewall, Data Saver | works |
 | Wi-Fi hotspot including tethered DNS | works |
+| Hotspot while connected to Wi-Fi (repeater) | works; the hotspot runs on 2.4 GHz |
 | 32-bit apps (`armeabi-v7a`) | works |
 
 Built `userdebug`, but not a debuggable build: `ro.debuggable=0`, `ro.secure=1`,
@@ -253,6 +254,8 @@ adds a small number of commits on top of cristidclxvi's branch:
 - the gold connectivity firmware restored as above, which fixes Bluetooth
   earbuds that dropped audio after a pause and lost the microphone on repeat
   calls
+- the hotspot can share a Wi-Fi connection (STA + AP concurrency), so
+  turning it on no longer turns Wi-Fi off
 - stock `atcid`, `ipsec_mon` and the modem's `mdota` and `cacerts` files
 
 The commits are listed in
